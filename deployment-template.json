@@ -1,0 +1,82 @@
+{
+  "apiVersion": "extensions/v1beta1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "[NAME]",
+    "labels": {
+      "webserver": "[NAME]"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "template": {
+      "metadata": {
+        "name": "[NAME]",
+        "labels": {
+          "webserver": "[NAME]"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "image": "nginx:alpine",
+            "name": "main",
+            "volumeMounts": [
+              {
+                "name": "html",
+                "mountPath": "/usr/share/nginx/html",
+                "readOnly": true
+              }
+            ],
+            "ports": [
+              {
+                "containerPort": 80,
+                "protocol": "TCP"
+              }
+            ]
+          },
+          {
+            "image": "openweb/git-sync",
+            "name": "git-sync",
+            "env": [
+              {
+                "name": "GIT_SYNC_REPO",
+                "value": "[GIT-REPO]"
+              },
+              {
+                "name": "GIT_SYNC_DEST",
+                "value": "/gitrepo"
+              },
+              {
+                "name": "GIT_SYNC_BRANCH",
+                "value": "master"
+              },
+              {
+                "name": "GIT_SYNC_REV",
+                "value": "FETCH_HEAD"
+              },
+              {
+                "name": "GIT_SYNC_WAIT",
+                "value": "10"
+              }
+            ],
+            "volumeMounts": [
+              {
+                "name": "html",
+                "mountPath": "/gitrepo"
+              }
+            ]
+          }
+        ],
+        "volumes": [
+          {
+            "name": "html",
+            "emptyDir": {
+              "medium": ""
+            }
+          }
+        ]
+      }
+    }
+  }
+}
