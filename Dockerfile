@@ -1,5 +1,5 @@
 FROM scratch
-MAINTAINER marko.luksa@gmail.com
+LABEL org.opencontainers.image.authors="marko.luksa@gmail.com"
 ADD website-controller /
 ADD deployment-template.json /
 ADD service-template.json /

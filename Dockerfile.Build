@@ -1,0 +1,22 @@
+# syntax=docker/dockerfile:1
+
+##
+## Build
+##
+FROM golang:1.16-buster AS build
+LABEL org.opencontainers.image.authors="marko.luksa@gmail.com"
+
+WORKDIR /
+
+COPY pkg pkg
+COPY Makefile go.mod ./
+RUN make
+
+##
+## Deploy
+##
+FROM scratch
+LABEL org.opencontainers.image.authors="marko.luksa@gmail.com"
+COPY --from=build website-controller /
+ADD deployment-template.json service-template.json /
+CMD ["/website-controller"]
