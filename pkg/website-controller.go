@@ -43,12 +43,12 @@ func main() {
 
 func createWebsite(website v1.Website) {
 	createResource(website, "api/v1", "services", "service-template.json")
-	createResource(website, "apis/extensions/v1beta1", "deployments", "deployment-template.json")
+	createResource(website, "apis/extensions/v1", "deployments", "deployment-template.json")
 }
 
 func deleteWebsite(website v1.Website) {
 	deleteResource(website, "api/v1", "services", getName(website));
-	deleteResource(website, "apis/extensions/v1beta1", "deployments", getName(website));
+	deleteResource(website, "apis/extensions/v1", "deployments", getName(website));
 }
 
 func createResource(webserver v1.Website, apiGroup string, kind string, filename string) {
